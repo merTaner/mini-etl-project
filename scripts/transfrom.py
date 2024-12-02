@@ -36,7 +36,7 @@ def transform_data(df):
     return df
     
 def main():
-    engine = create_engine("mysql+pymysql://mert:4444@localhost:3306/movies_db")
+    engine = create_engine("mysql+pymysql://mert:root@mariadb-container:3306/movies_db")
     
     try:
         with engine.connect() as connection:

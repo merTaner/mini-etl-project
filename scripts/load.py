@@ -3,7 +3,7 @@ from transfrom import main
 
 def load_to_mongo(data):
     try:
-        client = MongoClient("mongodb://mert:4444@mongodb-container:27017/")
+        client = MongoClient("mongodb://mert:4444@172.80.0.31:27017/")
 
         #create db and collection
         db = client["movies_db"]

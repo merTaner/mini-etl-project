@@ -5,8 +5,9 @@ WORKDIR /app
 COPY requirements.txt ./
 COPY ./scripts ./scripts/ 
 COPY ./data ./data
+COPY python-starter.sh ./
 
 RUN pip install -r requirements.txt
-RUN python /app/scripts/load_to_mariadb.py && python /app/scripts/transfrom.py
+RUN chmod +x /app/python-starter.sh
 
-CMD [ "python", "scripts/load.py"]
+CMD [ "/bin/bash", "/app/python-starter.sh" ]

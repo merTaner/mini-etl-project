@@ -7,7 +7,6 @@ COPY ./scripts ./scripts/
 COPY ./data ./data
 COPY python-starter.sh ./
 
-RUN pip install -r requirements.txt
 RUN chmod +x /app/python-starter.sh
 
 CMD [ "/bin/bash", "/app/python-starter.sh" ]

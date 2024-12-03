@@ -44,6 +44,8 @@ services:
     networks:
       dahbest:
         ipv4_address: 172.80.0.32
+    volumes:
+      - ./scripts/load_to_mariadb.py:/app/scripts/load_to_mariadb.py:ro
 
 networks:
   dahbest:

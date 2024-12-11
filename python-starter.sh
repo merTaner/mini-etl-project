@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Install requirements
-echo "Installing requirements..."
-pip install -r requirements.txt
-sleep 1
-
 # Run ETL scripts
 echo "Starting load_to_mariadb.py..."
 python /app/scripts/load_to_mariadb.py
@@ -18,5 +13,4 @@ echo "Starting load.py..."
 python scripts/load.py
 
 echo "Scripts completed, keeping container alive..."
-
 tail -f /dev/null

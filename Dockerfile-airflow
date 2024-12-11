@@ -1,0 +1,9 @@
+FROM bitnami/airflow:latest
+
+WORKDIR /opt/bitnami/airflow/
+
+COPY  ./requirements.txt ./requirements.txt
+RUN pip install -r /opt/bitnami/airflow/requirements.txt
+
+COPY ./data/raw/tmdb_5000_movies_and_credits.csv ./app/data/raw/tmdb_5000_movies_and_credits.csv
+

@@ -1,5 +1,5 @@
 from extract import extract_data
-import pandas as pd
+import pandas
 from sqlalchemy import create_engine
 import time
 from sqlalchemy.exc import OperationalError
@@ -17,12 +17,12 @@ def connect_with_retry(engine, max_retries=5, delay=5):
 def load_mariadb(engine, data):
     try:
         with connect_with_retry(engine) as connection:
-            data.to_sql("movies", engine, if_exists="replace", index=False)
+            data.to_sql("movies", connection, if_exists="replace", index=False)
     except Exception as e:
         print(f"Error: {e}")
 
 if __name__ == "__main__":
     engine = create_engine("mysql+pymysql://mert:44444444@172.80.0.30:3306/movies_db")
-    data = extract_data("/app/data/raw/tmdb_5000_movies_and_credits.csv")
+    data = extract_data("/opt/bitnami/airflow/app/data/raw/tmdb_5000_movies_and_credits.csv")
     load_mariadb(engine, data)
                  

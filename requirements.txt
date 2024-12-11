@@ -1,5 +1,4 @@
-numpy==1.23.2
-pandas==1.5.3
-sqlalchemy==2.0.36
-pymongo==4.3.3
-pymysql==1.1.1
+pandas
+sqlalchemy
+pymongo
+pymysql

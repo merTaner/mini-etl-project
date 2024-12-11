@@ -1,8 +1,8 @@
 # Building ETL Process with a Mini Project
 
-### Hello everyone, I’m currently learning ETL process.
+Hello everyone, I’m currently learning ETL process.
 
-#### In this project, We’ll cover:
+In this project, We’ll cover:
 
 - How to extract CSV data from GitHub
 - How to create Docker Compose file for python, mariadb and mongodb

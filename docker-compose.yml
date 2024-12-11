@@ -1,56 +1,117 @@
-services:
+  services:
 
-  mariadb:
-    image: mariadb:11.6
-    container_name: mariadb-container
-    restart: always
-    ports:
-      - 3306:3306
-    environment:
-      MYSQL_DATABASE: movies_db
-      MYSQL_USER: mert
-      MYSQL_PASSWORD: 44444444
-      MYSQL_ROOT_PASSWORD: 44444444
-    volumes:
-      - ./volumes/maria_data:/var/lib/mysql
-    networks:
-      dahbest:
-        ipv4_address: 172.80.0.30
+    mariadb:
+      image: mariadb:11.6
+      container_name: mariadb-container
+      restart: always
+      ports:
+        - 3306:3306
+      environment:
+        MYSQL_DATABASE: movies_db
+        MYSQL_USER: mert
+        MYSQL_PASSWORD: 44444444
+        MYSQL_ROOT_PASSWORD: 44444444
+      volumes:
+        - ./volumes/maria_data:/var/lib/mysql
+      networks:
+        dahbest:
+          ipv4_address: 172.80.0.30
+          
+    mongodb:
+      image: mongo:8.0
+      restart: always
+      container_name: mongodb-container
+      ports:
+        - 27017:27017
+      environment:
+        MONGO_INITDB_ROOT_USERNAME: mert
+        MONGO_INITDB_ROOT_PASSWORD: 4444
+      volumes:
+        - ./volumes/mongo_data:/data/db
+      networks:
+        dahbest:
+          ipv4_address: 172.80.0.31
+
+    postgres:
+      image: postgres:15
+      container_name: posgresql-container
+      environment:
+        POSTGRES_USER: mert
+        POSTGRES_PASSWORD: 4444
+        POSTGRES_DB: airflow
+      ports:
+        - 5432:5432
+      networks:
+        dahbest:
+          ipv4_address: 172.80.0.33
+
+    airflow-webserver:
+      build:
+        context: .
+        dockerfile: Dockerfile-airflow
+      restart: on-failure
+      environment:
+        - AIRFLOW_DATABASE_USERNAME=mert
+        - AIRFLOW_DATABASE_PASSWORD=4444
+        - AIRFLOW_EXECUTOR=LocalExecutor
+        - AIRFLOW_LOAD_EXAMPLES=no
+        - AIRFLOW_USERNAME=mert
+        - AIRFLOW_EMAIL=user@example.com
+        - AIRFLOW_PASSWORD=4444
+        - AIRFLOW_DATABASE_HOST=172.80.0.33
+        - AIRFLOW_DATABASE_PORT_NUMBER=5432
+        - AIRFLOW_DATABASE_NAME=airflow
+        - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://mert:4444@172.80.0.33:5432/airflow
+      depends_on:
+        - postgres
+      ports:
+        - 8080:8080
+      networks:
+        dahbest:
+          ipv4_address: 172.80.0.34
+      volumes:
+        - ./airflow/dags:/opt/bitnami/airflow/dags
+        - ./airflow/logs:/opt/bitnami/airflow/logs
+        - ./scripts/extract.py:/opt/bitnami/airflow/dags/extract.py
+        - ./scripts/load_to_mariadb.py:/opt/bitnami/airflow/dags/load_to_mariadb.py
+        - ./scripts/load.py:/opt/bitnami/airflow/dags/load.py
+        - ./scripts/transfrom.py:/opt/bitnami/airflow/dags/transfrom.py
         
-  mongodb:
-    image: mongo:8.0
-    restart: always
-    container_name: mongodb-container
-    ports:
-      - 27017:27017
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: mert
-      MONGO_INITDB_ROOT_PASSWORD: 4444
-    volumes:
-      - ./volumes/mongo_data:/data/db
-    networks:
-      dahbest:
-        ipv4_address: 172.80.0.31
+    airflow-scheduler:
+      image: bitnami/airflow-scheduler:latest
+      container_name: airflow-scheduler
+      environment:
+        - AIRFLOW_COMPONENT_TYPE=scheduler
+        - AIRFLOW_DATABASE_USERNAME=mert
+        - AIRFLOW_DATABASE_PASSWORD=4444
+        - AIRFLOW_EXECUTOR=LocalExecutor
+        - AIRFLOW_WEBSERVER_HOST=172.80.0.34
+        - AIRFLOW_DATABASE_HOST=172.80.0.33
+        - AIRFLOW_DATABASE_PORT_NUMBER=5432
+        - AIRFLOW_DATABASE_NAME=airflow
+        - AIRFLOW_USERNAME=mert
+        - AIRFLOW_EMAIL=mert@example.com
+        - AIRFLOW_PASSWORD=4444
+        - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://mert:4444@172.80.0.33:5432/airflow
+      command: >
+        /bin/bash -c "airflow db init && airflow scheduler"
+      depends_on:
+        - postgres
+        - airflow-webserver
+      volumes:
+        - ./airflow/dags:/opt/bitnami/airflow/dags
+        - ./airflow/logs:/opt/bitnami/airflow/logs
+      networks:
+        dahbest:
+          ipv4_address: 172.80.0.35
 
-  python-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: python-container
-    restart: always
-    depends_on:
-      - mariadb
-      - mongodb
-    networks:
-      dahbest:
-        ipv4_address: 172.80.0.32
-    volumes:
-      - ./scripts/load_to_mariadb.py:/app/scripts/load_to_mariadb.py:ro
-
-networks:
-  dahbest:
-    external: true
-    
-volumes:
-  maria_data:
-  mongo_data:
+  networks:
+    dahbest:
+      external: true
+      
+  volumes:
+    maria_data:
+    mongo_data:
+    postgres_data:
+    airflow_dags:
+    airflow_logs:

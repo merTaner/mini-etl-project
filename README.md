@@ -26,7 +26,6 @@ You can find details of this article from the link : [Medium Post](https://mediu
 |MariaDb| 11.6     | Relational Database |
 |MongoDB| 8.0      | NoSQL Database |
 
-
 ## Prerequisites
 
 - Docker Desktop
@@ -41,3 +40,21 @@ First, create a Docker network to connect the containers:
 Then, start the containers:
 
 ```docker-compose up -d --build ```
+
+## If airflow-scheduler not working and throw error
+
+Error like this : raise util.CommandError(resolution) from re
+alembic.util.exc.CommandError: Can't locate revision identified by '5f2621c13b39'
+
+1. Connect postgres container
+
+    ``` docker exec -it posgresql-container psql -U mert -d airflow ```
+
+2. Change value of the version_num
+
+    ``` 
+    UPDATE alembic_version
+    SET version_num = '22ed7efa9da2'
+    WHERE version_num = '5f2621c13b39'; 
+    ```
+

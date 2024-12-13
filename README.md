@@ -33,13 +33,30 @@ You can find details of this article from the link : [Medium Post](https://mediu
 
 ## How To Run
 
-First, create a Docker network to connect the containers:
+#### First, create a Docker network to connect the containers:
 
 ```docker network create --subnet=172.80.0.0/16 dahbest```
 
-Then, start the containers:
+#### Then, start the containers:
 
 ```docker-compose up -d --build ```
+
+#### Access to localhost:8080
+
+Enter your username (you can change docker-compose env) : (default) mert
+
+Enter password : (default) 4444
+
+Admin > Connections > Add new record 
+
+```
+Connection Id : python_ssh
+Connection Type : SSH
+Host : Python
+Username : root
+Password : mertmert
+Port : 22
+```
 
 ## If airflow-scheduler not working and throw error
 

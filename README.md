@@ -8,6 +8,9 @@ In this project, We’ll cover:
 - How to create Docker Compose file for python, mariadb and mongodb
 - How to apply transform technique with python
 - How to load final data to MongoDB
+- Finally we add airflow for manage all this process.
+
+Add project image
 
 #### You can find details of this article from the link : [Medium Post](https://medium.com/@merTaner/mini-etl-project-93e9a67c4139)
 
@@ -17,6 +20,9 @@ In this project, We’ll cover:
 |Tool|Version|Description|
 | ------ | ------ | ----------- |
 |Docker | 20.10.22 | Containerization platform |
+|Docker Compose |v2.15.1|Tool for defining and running multi-container Docker applications|
+|Postgres|Postgres:15|Open-source relational database for airflow|
+|Airflow|2.10.3|Workflow automation and scheduling tool|
 |Python | 3.11-slim| Programing language |
 |MariaDb| 11.6     | Relational Database |
 |MongoDB| 8.0      | NoSQL Database |

@@ -12,10 +12,9 @@ In this project, We’ll cover:
 
 Add project image
 
-#### You can find details of this article from the link : [Medium Post](https://medium.com/@merTaner/mini-etl-project-93e9a67c4139)
+You can find details of this article from the link : [Medium Post](https://medium.com/@merTaner/mini-etl-project-93e9a67c4139)
 
-### Tools / Softwares Versions
----
+## Tools / Softwares Versions
 
 |Tool|Version|Description|
 | ------ | ------ | ----------- |
@@ -28,13 +27,13 @@ Add project image
 |MongoDB| 8.0      | NoSQL Database |
 
 
-### Prerequisites
----
+## Prerequisites
+
 - Docker Desktop
 - Python
 
-### How To Run
----
+## How To Run
+
 First, create a Docker network to connect the containers:
 
 ```docker network create --subnet=172.80.0.0/16 dahbest```

@@ -2,4 +2,5 @@
 /volumes
 
 # Airflow logs
-/airflow/logs
+/airflow/logs/
+!/airflow/logs/airflow_logs_path.txt

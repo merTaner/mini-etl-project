@@ -112,7 +112,7 @@
         - AIRFLOW_PASSWORD=4444
         - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://mert:4444@172.80.0.33:5432/airflow
       command: >
-        /bin/bash -c "airflow db upgrade && airflow scheduler"
+        /bin/bash -c "airflow db init && airflow scheduler"
       depends_on:
         postgres:
           condition: service_healthy

@@ -23,6 +23,6 @@ def load_mariadb(engine, data):
 
 if __name__ == "__main__":
     engine = create_engine("mysql+pymysql://mert:44444444@172.80.0.30:3306/movies_db")
-    data = extract_data("/opt/bitnami/airflow/app/data/raw/tmdb_5000_movies_and_credits.csv")
+    data = extract_data("/app/data/raw/tmdb_5000_movies_and_credits.csv")
     load_mariadb(engine, data)
                  

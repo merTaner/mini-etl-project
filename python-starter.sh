@@ -13,4 +13,7 @@ echo "Starting load.py..."
 python scripts/load.py
 
 echo "Scripts completed, keeping container alive..."
+
+service ssh start
+
 tail -f /dev/null

@@ -1,9 +1,12 @@
 FROM bitnami/airflow:latest
 
-WORKDIR /opt/bitnami/airflow/
+USER root
+RUN apt-get update && apt-get install -y openssh-client && apt-get clean
 
-COPY  ./requirements.txt ./requirements.txt
-RUN pip install -r /opt/bitnami/airflow/requirements.txt
+RUN useradd -m -u 1001 -s /bin/bash airflow_user
+RUN chown -R airflow_user:airflow_user /opt/bitnami/airflow
 
-COPY ./data/raw/tmdb_5000_movies_and_credits.csv ./app/data/raw/tmdb_5000_movies_and_credits.csv
+RUN chmod 777 /opt/bitnami/airflow
+
+USER 1001
 

@@ -32,6 +32,21 @@
         dahbest:
           ipv4_address: 172.80.0.31
 
+    python:
+      container_name: python
+      build:
+        context: .
+        dockerfile: Dockerfile-python
+      restart: on-failure
+      ports:
+        - "22:22"
+      volumes:
+        - ./scripts:/app/scripts
+        - ./data:/app/data
+      networks:
+        dahbest:
+          ipv4_address: 172.80.0.32
+
     postgres:
       image: postgres:15
       container_name: posgresql-container
@@ -44,6 +59,12 @@
       networks:
         dahbest:
           ipv4_address: 172.80.0.33
+      volumes:
+        - ./volumes/postgresql_data:/var/lib/postgresql/data
+      healthcheck:
+        test: ["CMD", "pg_isready", "-U", "mert"]
+        interval: 5s
+        retries: 5
 
     airflow-webserver:
       build:
@@ -63,7 +84,8 @@
         - AIRFLOW_DATABASE_NAME=airflow
         - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://mert:4444@172.80.0.33:5432/airflow
       depends_on:
-        - postgres
+        postgres:
+          condition: service_healthy
       ports:
         - 8080:8080
       networks:
@@ -72,10 +94,6 @@
       volumes:
         - ./airflow/dags:/opt/bitnami/airflow/dags
         - ./airflow/logs:/opt/bitnami/airflow/logs
-        - ./scripts/extract.py:/opt/bitnami/airflow/dags/extract.py
-        - ./scripts/load_to_mariadb.py:/opt/bitnami/airflow/dags/load_to_mariadb.py
-        - ./scripts/load.py:/opt/bitnami/airflow/dags/load.py
-        - ./scripts/transfrom.py:/opt/bitnami/airflow/dags/transfrom.py
         
     airflow-scheduler:
       image: bitnami/airflow-scheduler:latest
@@ -96,8 +114,10 @@
       command: >
         /bin/bash -c "airflow db init && airflow scheduler"
       depends_on:
-        - postgres
-        - airflow-webserver
+        postgres:
+          condition: service_healthy
+        airflow-webserver:
+          condition: service_started
       volumes:
         - ./airflow/dags:/opt/bitnami/airflow/dags
         - ./airflow/logs:/opt/bitnami/airflow/logs
@@ -112,6 +132,6 @@
   volumes:
     maria_data:
     mongo_data:
-    postgres_data:
+    postgresql_data:
     airflow_dags:
     airflow_logs:

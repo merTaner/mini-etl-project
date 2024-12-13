@@ -1,0 +1,9 @@
+FROM bitnami/airflow-scheduler:latest
+
+USER root
+
+RUN mkdir -p /opt/bitnami/airflow/logs && \
+    chown -R 1001:1001 /opt/bitnami/airflow/logs && \
+    chmod -R 755 /opt/bitnami/airflow/logs
+
+USER 1001

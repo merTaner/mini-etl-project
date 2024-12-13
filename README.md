@@ -10,7 +10,7 @@ In this project, We’ll cover:
 - How to load final data to MongoDB
 - Finally we add airflow for manage all this process.
 
-Add project image
+![ETL_project_airflow](https://github.com/user-attachments/assets/589aec53-1016-43af-ab97-e6cfca6e5641)
 
 You can find details of this article from the link : [Medium Post](https://medium.com/@merTaner/mini-etl-project-93e9a67c4139)
 

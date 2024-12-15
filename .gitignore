@@ -1,6 +1,6 @@
 # Docker Volume
 /volumes
-!/volumes/postgresql_data/
+!/volumes/postgresql_data
 
 # Airflow logs
 /airflow/logs/

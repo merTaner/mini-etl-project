@@ -71,6 +71,7 @@
         context: .
         dockerfile: Dockerfile-airflow
       restart: on-failure
+      container_name: airflow-webserver
       environment:
         - AIRFLOW_DATABASE_USERNAME=mert
         - AIRFLOW_DATABASE_PASSWORD=4444
